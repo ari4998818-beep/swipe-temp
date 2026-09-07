@@ -371,19 +371,6 @@
     </style>
   </head>
   <body>
-    <!-- Netlify form detection stubs (static HTML the build parses at deploy).
-         The visible forms below submit via fetch for inline success states. -->
-    <form name="email-signup" netlify netlify-honeypot="bot-field" hidden>
-      <input type="email" name="email" />
-      <input name="bot-field" />
-    </form>
-    <form name="idea" netlify netlify-honeypot="bot-field" hidden>
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <textarea name="problem"></textarea>
-      <input name="bot-field" />
-    </form>
-
     <!-- ================= NAV ================= -->
     <header class="nav">
       <a href="#top" class="nav__logo" aria-label="Swipe — home">
@@ -411,7 +398,15 @@
             </p>
 
             <div class="signup anim d3" id="signup">
-              <form class="signup__form" name="email-signup-visible" novalidate>
+              <form
+                class="signup__form"
+                name="email-signup"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                novalidate
+              >
+                <input type="hidden" name="form-name" value="email-signup" />
                 <div class="signup__row">
                   <label class="sr-only" for="email">Your email</label>
                   <input
@@ -474,7 +469,15 @@
             <button type="button" class="modal__close" data-close-idea aria-label="Close">×</button>
           </div>
           <p class="modal__intro">Tell us the mess that drives you up the wall. We read every one.</p>
-          <form class="modal__form-el" name="idea-visible" novalidate>
+          <form
+            class="modal__form-el"
+            name="idea"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            novalidate
+          >
+            <input type="hidden" name="form-name" value="idea" />
             <div class="field">
               <label for="idea-name">Name</label>
               <input id="idea-name" name="name" type="text" autocomplete="name" required />
@@ -592,9 +595,9 @@
       modalForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         modalError.textContent = '';
-        const name = modalForm.name.value.trim();
-        const email = modalForm.email.value.trim();
-        const problem = modalForm.problem.value.trim();
+        const name = document.getElementById('idea-name').value.trim();
+        const email = document.getElementById('idea-email').value.trim();
+        const problem = document.getElementById('idea-problem').value.trim();
         if (!name || !problem || !isEmail(email)) {
           modalError.textContent = 'Please fill in every field with a valid email.';
           return;
