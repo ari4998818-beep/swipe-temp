@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Swipe — Smart cleaning products for real everyday messes</title>
+    <meta
+      name="description"
+      content="Smart cleaning products, made for real everyday messes. Be the first to see what we're working on."
+    />
+    <meta name="theme-color" content="#f7f1e3" />
+    <link rel="icon" type="image/webp" href="assets/logo.webp" />
+
+    <meta property="og:title" content="Swipe" />
+    <meta property="og:description" content="Smart cleaning products, made for real everyday messes. Be the first to see what we're working on." />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --pink: #e62565;
+        --pink-deep: #c31752;
+        --navy: #131c45;
+        --ink: #0c1332;
+        --green: #8cbe3f;
+        --green-deep: #6c9b28;
+        --cream: #f7f1e3;
+        --cream-warm: #f2e9d4;
+        --white: #fff;
+        --font-display: 'Anton', 'Arial Narrow', sans-serif;
+        --font-body: 'Nunito', system-ui, sans-serif;
+        --nav-h: 76px;
+        --pad-x: clamp(20px, 5vw, 72px);
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      html, body { overscroll-behavior-y: none; }
+
+      body {
+        font-family: var(--font-body);
+        font-weight: 600;
+        color: var(--navy);
+        background: var(--cream);
+        line-height: 1.55;
+        overflow-x: clip;
+      }
+
+      img { max-width: 100%; display: block; }
+      a { color: inherit; }
+      button { font: inherit; cursor: pointer; border: 0; background: none; }
+
+      .display {
+        font-family: var(--font-display);
+        font-weight: 400;
+        text-transform: uppercase;
+        line-height: 0.92;
+        letter-spacing: 0.005em;
+      }
+
+      /* ---------------- buttons ---------------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+        letter-spacing: 0.04em;
+        padding: 15px 28px 13px;
+        border-radius: 999px;
+        text-decoration: none;
+        transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+      }
+      .btn--pink {
+        background: var(--pink);
+        color: var(--white);
+        box-shadow: 0 10px 24px rgba(230, 37, 101, 0.35);
+      }
+      .btn--pink:hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 16px 30px rgba(230, 37, 101, 0.4); }
+      .btn--pink:active { transform: translateY(0) scale(0.98); }
+
+      .textlink {
+        font-weight: 800;
+        color: var(--navy);
+        text-decoration: none;
+        position: relative;
+        background: none;
+      }
+      .textlink::after {
+        content: '';
+        position: absolute; left: 0; right: 100%; bottom: -3px;
+        border-bottom: 3px dashed var(--pink);
+        transition: right 0.25s ease;
+      }
+      .textlink:hover::after { right: 0; }
+
+      :focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; border-radius: 6px; }
+      .sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+      }
+
+      /* ---------------- nav ---------------- */
+      .nav {
+        position: fixed;
+        inset-inline: 0; top: 0;
+        z-index: 50;
+        height: var(--nav-h);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 0 var(--pad-x);
+      }
+      .nav__logo { flex: 0 0 auto; }
+      .nav__logo img {
+        width: 96px;
+        height: auto;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .nav__logo:hover img { transform: rotate(-3deg) scale(1.06); }
+      .nav__actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: clamp(14px, 2.5vw, 26px);
+      }
+      .nav__actions .btn { padding: 11px 22px 9px; font-size: 0.9rem; white-space: nowrap; }
+      .nav__actions .textlink { white-space: nowrap; }
+
+      /* ---------------- hero ---------------- */
+      .hero {
+        position: relative;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        /* content sits slightly higher than dead-center */
+        padding: calc(var(--nav-h) + 6px) 0 32px;
+      }
+      .hero__inner {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+        align-items: center;
+        gap: clamp(8px, 2vw, 24px);
+        padding: 0 var(--pad-x);
+      }
+
+      .hero__headline {
+        font-size: clamp(2.8rem, 9.2vw, 8.6rem);
+        color: var(--navy);
+      }
+      .hero__headline .mask { display: block; padding-block: 0.02em; }
+      .hero__headline .pink { color: var(--pink); }
+      .hero__headline .dot { color: var(--green); }
+
+      .hero__sub {
+        max-width: 40ch;
+        font-size: clamp(1.02rem, 1.5vw, 1.25rem);
+        font-weight: 700;
+        color: var(--navy);
+        opacity: 0.85;
+        margin: 20px 0 22px;
+      }
+
+      /* email signup */
+      .signup { max-width: 460px; }
+      .signup__row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .signup__input {
+        flex: 1 1 200px;
+        min-width: 0;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+        color: var(--navy);
+        background: var(--white);
+        border: 3px solid var(--navy);
+        border-radius: 999px;
+        padding: 13px 22px;
+      }
+      .signup__input::placeholder { color: rgba(19, 28, 69, 0.5); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; }
+      .signup__btn { flex: 0 0 auto; border: 3px solid var(--pink); }
+      .signup__note { margin-top: 14px; font-weight: 700; font-size: 0.95rem; }
+      .signup__success {
+        display: none;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+        color: var(--green-deep);
+      }
+      .signup.is-done .signup__form { display: none; }
+      .signup.is-done .signup__success { display: flex; }
+      .signup__error { color: var(--pink-deep); font-weight: 800; font-size: 0.9rem; margin-top: 8px; min-height: 1em; }
+
+      /* ---------------- mascot ---------------- */
+      .hero__art {
+        position: relative;
+        height: min(74vh, 680px);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .mascot {
+        position: relative;
+        z-index: 2;
+        height: clamp(380px, 68vh, 660px); /* ~10% larger than the prior hero */
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+        transform-origin: 50% 100%;
+        will-change: transform;
+      }
+      .mascot-shadow {
+        position: absolute;
+        z-index: 1;
+        bottom: 3%;
+        left: 50%;
+        width: min(56%, 360px);
+        height: 26px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: radial-gradient(ellipse at center, rgba(12,19,50,0.26) 0%, rgba(12,19,50,0.14) 44%, transparent 72%);
+        filter: blur(7px);
+      }
+      .spark { position: absolute; color: var(--pink); pointer-events: none; font-size: clamp(1.2rem, 2.4vw, 2.2rem); }
+      .spark--a { top: 12%; right: 8%; }
+      .spark--b { bottom: 20%; left: 44%; color: var(--green); font-size: clamp(1rem, 1.8vw, 1.6rem); }
+
+      /* ---------------- footer ---------------- */
+      .footer {
+        background: var(--navy);
+        color: var(--cream);
+        border-top: 4px solid var(--green);
+      }
+      .footer__inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px 40px;
+        padding: clamp(34px, 5vw, 56px) var(--pad-x);
+      }
+      .footer__logo img { width: 84px; height: auto; }
+      .footer__tag {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+        letter-spacing: 0.02em;
+        color: var(--cream);
+      }
+      .footer__actions { margin-left: auto; display: flex; align-items: center; gap: 22px; }
+      .footer__actions .textlink { color: var(--cream); }
+      .footer__actions .textlink::after { border-color: var(--green); }
+      .footer__actions .btn { padding: 11px 20px 9px; font-size: 0.85rem; }
+      .footer__legal {
+        padding: 0 var(--pad-x) 26px;
+        font-size: 0.85rem;
+        color: rgba(247, 241, 227, 0.6);
+      }
+
+      /* ---------------- idea modal ---------------- */
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(12, 19, 50, 0.55);
+        backdrop-filter: blur(3px);
+      }
+      .modal.is-open { display: flex; }
+      .modal__panel {
+        width: min(520px, 100%);
+        max-height: 90vh;
+        overflow-y: auto;
+        background: var(--cream);
+        border-radius: 22px;
+        border-top: 6px solid var(--green);
+        padding: clamp(24px, 4vw, 40px);
+        box-shadow: 0 30px 60px rgba(12, 19, 50, 0.4);
+      }
+      .modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+      .modal__title { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--navy); line-height: 0.95; }
+      .modal__close {
+        flex: 0 0 auto;
+        width: 40px; height: 40px; border-radius: 50%;
+        background: var(--navy); color: var(--cream);
+        font-size: 1.3rem; line-height: 1;
+        display: grid; place-items: center;
+      }
+      .modal__intro { margin: 10px 0 20px; font-weight: 700; color: rgba(19,28,69,0.75); }
+      .field { display: grid; gap: 6px; margin-bottom: 16px; }
+      .field label { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; }
+      .field input, .field textarea {
+        font-family: var(--font-body); font-weight: 600; font-size: 1rem;
+        color: var(--navy); background: var(--white);
+        border: 2.5px solid var(--navy); border-radius: 14px; padding: 12px 14px;
+        width: 100%;
+      }
+      .field textarea { min-height: 108px; resize: vertical; }
+      .modal__submit { width: 100%; border: 3px solid var(--pink); margin-top: 4px; }
+      .modal__error { color: var(--pink-deep); font-weight: 800; font-size: 0.9rem; min-height: 1em; margin-top: 8px; }
+      .modal__success { display: none; text-align: center; padding: 16px 0; }
+      .modal__success .display { font-size: clamp(1.8rem, 5vw, 2.6rem); color: var(--green-deep); }
+      .modal__success p { margin-top: 10px; font-weight: 700; color: rgba(19,28,69,0.7); }
+      .modal.is-done .modal__form { display: none; }
+      .modal.is-done .modal__success { display: block; }
+
+      /* ---------------- entrance + subtle cloth movement ---------------- */
+      @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+      @keyframes mascotIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes clothSway {
+        0%, 100% { transform: rotate(-0.6deg); }
+        50%      { transform: rotate(0.6deg); }
+      }
+
+      .anim { opacity: 0; animation: rise 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+      .anim.d1 { animation-delay: 0.05s; }
+      .anim.d2 { animation-delay: 0.15s; }
+      .anim.d3 { animation-delay: 0.25s; }
+
+      .mascot {
+        animation: mascotIn 0.9s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      /* very slight, slow idle sway (reads as the cloth shifting) */
+      .mascot-wrap {
+        display: contents;
+      }
+      .mascot.sway { animation: mascotIn 0.9s cubic-bezier(0.22,1,0.36,1) both, clothSway 6s ease-in-out 1s infinite; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .anim { opacity: 1; animation: none; }
+        .mascot, .mascot.sway { animation: none; opacity: 1; }
+      }
+
+      /* ---------------- responsive ---------------- */
+      @media (max-width: 860px) {
+        .hero { padding-top: calc(var(--nav-h) + 4px); }
+        .hero__inner { grid-template-columns: 1fr; gap: 18px; }
+        .hero__art { height: min(44vh, 360px); order: -1; }
+        .mascot { height: clamp(230px, 38vh, 340px); }
+        .hero__sub { margin: 16px 0 18px; }
+        .nav__logo img { width: 74px; }
+        .footer__actions { margin-left: 0; width: 100%; }
+      }
+      @media (max-width: 560px) {
+        .nav { gap: 10px; padding-inline: 16px; }
+        .nav__actions { gap: 10px; }
+        .nav__actions .btn { padding: 9px 13px 7px; font-size: 0.72rem; }
+        .nav__actions .textlink { font-size: 0.82rem; }
+      }
+      @media (max-width: 420px) {
+        .signup__btn { flex: 1 1 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Netlify form detection stubs (static HTML the build parses at deploy).
+         The visible forms below submit via fetch for inline success states. -->
+    <form name="email-signup" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <input name="bot-field" />
+    </form>
+    <form name="idea" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="problem"></textarea>
+      <input name="bot-field" />
+    </form>
+
+    <!-- ================= NAV ================= -->
+    <header class="nav">
+      <a href="#top" class="nav__logo" aria-label="Swipe — home">
+        <img src="assets/logo.webp" alt="Swipe" />
+      </a>
+      <div class="nav__actions">
+        <button type="button" class="textlink" data-open-idea>Have an idea?</button>
+        <button type="button" class="btn btn--pink" data-focus-email>Keep me posted</button>
+      </div>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <main>
+      <section class="hero" id="top">
+        <div class="hero__inner">
+          <div class="hero__copy">
+            <h1 class="display hero__headline">
+              <span class="mask"><span class="anim d1">Messes</span></span>
+              <span class="mask"><span class="anim d1">happen.</span></span>
+              <span class="mask"><span class="anim d2 pink">Just swipe<span class="dot">.</span></span></span>
+            </h1>
+            <p class="hero__sub anim d3">
+              Smart cleaning products, made for real everyday messes. Be the first to see what
+              we&rsquo;re working on.
+            </p>
+
+            <div class="signup anim d3" id="signup">
+              <form class="signup__form" name="email-signup-visible" novalidate>
+                <div class="signup__row">
+                  <label class="sr-only" for="email">Your email</label>
+                  <input
+                    class="signup__input"
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="YOUR EMAIL"
+                    autocomplete="email"
+                    required
+                  />
+                  <input class="sr-only" tabindex="-1" autocomplete="off" name="bot-field" aria-hidden="true" />
+                  <button class="btn btn--pink signup__btn" type="submit">Keep me posted</button>
+                </div>
+                <p class="signup__error" role="alert" aria-live="assertive"></p>
+                <p class="signup__note">
+                  <button type="button" class="textlink" data-open-idea>Have a cleaning idea? Tell us.</button>
+                </p>
+              </form>
+              <p class="signup__success" role="status" aria-live="polite">
+                <span aria-hidden="true">✦</span> You&rsquo;re on the list.
+              </p>
+            </div>
+          </div>
+
+          <div class="hero__art">
+            <span class="mascot-shadow" aria-hidden="true"></span>
+            <img
+              class="mascot sway"
+              src="assets/mascot.webp"
+              width="1012" height="929"
+              alt="The Swipe mascot — a friendly cloth character in a green cap holding a Swipe cloth"
+            />
+            <span class="spark spark--a" aria-hidden="true">✦</span>
+            <span class="spark spark--b" aria-hidden="true">✦</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <a href="#top" class="footer__logo" aria-label="Swipe — home"><img src="assets/logo.webp" alt="Swipe" /></a>
+        <span class="footer__tag">Made to help, every day.</span>
+        <div class="footer__actions">
+          <button type="button" class="textlink" data-open-idea>Have an idea?</button>
+          <button type="button" class="btn btn--pink" data-focus-email>Keep me posted</button>
+        </div>
+      </div>
+      <p class="footer__legal">© 2026 Swipe</p>
+    </footer>
+
+    <!-- ================= IDEA MODAL ================= -->
+    <div class="modal" id="idea-modal" role="dialog" aria-modal="true" aria-labelledby="idea-title" aria-hidden="true">
+      <div class="modal__panel">
+        <div class="modal__form">
+          <div class="modal__head">
+            <h2 class="modal__title" id="idea-title">Have an idea?</h2>
+            <button type="button" class="modal__close" data-close-idea aria-label="Close">×</button>
+          </div>
+          <p class="modal__intro">Tell us the mess that drives you up the wall. We read every one.</p>
+          <form class="modal__form-el" name="idea-visible" novalidate>
+            <div class="field">
+              <label for="idea-name">Name</label>
+              <input id="idea-name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="idea-email">Email</label>
+              <input id="idea-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="idea-problem">What cleaning problem should Swipe solve?</label>
+              <textarea id="idea-problem" name="problem" required></textarea>
+            </div>
+            <input class="sr-only" tabindex="-1" autocomplete="off" name="bot-field" aria-hidden="true" />
+            <button type="submit" class="btn btn--pink modal__submit">Send it to Swipe</button>
+            <p class="modal__error" role="alert" aria-live="assertive"></p>
+          </form>
+        </div>
+        <div class="modal__success" role="status" aria-live="polite">
+          <span class="display">Got it. We&rsquo;re on the mess.</span>
+          <p>Thanks for helping shape what Swipe makes next.</p>
+          <button type="button" class="btn btn--pink" data-close-idea style="margin-top:18px;border:3px solid var(--pink);">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---- Netlify form submit helper (AJAX -> inline success) ----
+      const encode = (data) =>
+        Object.keys(data)
+          .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+          .join('&');
+
+      function postToNetlify(formName, data) {
+        return fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encode({ 'form-name': formName, ...data }),
+        });
+      }
+
+      const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+      // ---- Email signup ----
+      const signup = document.getElementById('signup');
+      const signupForm = signup.querySelector('.signup__form');
+      const signupError = signup.querySelector('.signup__error');
+      const emailInput = document.getElementById('email');
+
+      signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        signupError.textContent = '';
+        const email = emailInput.value.trim();
+        if (!isEmail(email)) {
+          signupError.textContent = 'Please enter a valid email address.';
+          emailInput.focus();
+          return;
+        }
+        if (signupForm.querySelector('[name="bot-field"]').value) return; // honeypot
+        try {
+          await postToNetlify('email-signup', { email });
+          signup.classList.add('is-done');
+        } catch (err) {
+          signupError.textContent = 'Something went wrong. Please try again.';
+        }
+      });
+
+      // ---- Focus email (Keep me posted buttons) ----
+      document.querySelectorAll('[data-focus-email]').forEach((b) =>
+        b.addEventListener('click', () => {
+          document.getElementById('top').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setTimeout(() => emailInput.focus({ preventScroll: true }), 420);
+        }),
+      );
+
+      // ---- Idea modal ----
+      const modal = document.getElementById('idea-modal');
+      const modalForm = modal.querySelector('.modal__form-el');
+      const modalError = modal.querySelector('.modal__error');
+      let lastFocus = null;
+
+      const focusable = () =>
+        modal.querySelectorAll('a[href], button:not([disabled]), input, textarea, [tabindex]:not([tabindex="-1"])');
+
+      function openIdea() {
+        lastFocus = document.activeElement;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        const first = modal.querySelector('#idea-name') || modal.querySelector('.modal__close');
+        setTimeout(() => first && first.focus(), 30);
+        document.addEventListener('keydown', onKey);
+      }
+      function closeIdea() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', onKey);
+        if (lastFocus) lastFocus.focus();
+      }
+      function onKey(e) {
+        if (e.key === 'Escape') { closeIdea(); return; }
+        if (e.key === 'Tab') {
+          const f = Array.from(focusable()).filter((el) => el.offsetParent !== null);
+          if (!f.length) return;
+          const first = f[0], last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+
+      document.querySelectorAll('[data-open-idea]').forEach((b) => b.addEventListener('click', openIdea));
+      document.querySelectorAll('[data-close-idea]').forEach((b) => b.addEventListener('click', closeIdea));
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeIdea(); });
+
+      modalForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        modalError.textContent = '';
+        const name = modalForm.name.value.trim();
+        const email = modalForm.email.value.trim();
+        const problem = modalForm.problem.value.trim();
+        if (!name || !problem || !isEmail(email)) {
+          modalError.textContent = 'Please fill in every field with a valid email.';
+          return;
+        }
+        if (modalForm.querySelector('[name="bot-field"]').value) return; // honeypot
+        try {
+          await postToNetlify('idea', { name, email, problem });
+          modal.classList.add('is-done');
+          modal.querySelector('.modal__success .btn').focus();
+        } catch (err) {
+          modalError.textContent = 'Something went wrong. Please try again.';
+        }
+      });
+    </script>
+  </body>
+</html>

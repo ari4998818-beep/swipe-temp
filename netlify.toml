@@ -1,0 +1,4 @@
+# Static one-page site — no build step. Netlify publishes the repo root
+# and auto-detects the two forms (email-signup, idea) from the HTML.
+[build]
+  publish = "."
