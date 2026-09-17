@@ -322,6 +322,52 @@
       .modal.is-done .modal__form { display: none; }
       .modal.is-done .modal__success { display: block; }
 
+      /* ---------------- floating WhatsApp badge ---------------- */
+      .wa {
+        position: fixed;
+        right: clamp(14px, 2.5vw, 28px);
+        bottom: clamp(14px, 2.5vw, 28px);
+        z-index: 60;
+        width: clamp(88px, 12vw, 120px);
+        aspect-ratio: 1;
+        display: block;
+        filter: drop-shadow(0 10px 22px rgba(12, 19, 50, 0.28));
+        transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .wa:hover { transform: scale(1.06) rotate(-2deg); }
+      .wa:active { transform: scale(0.97); }
+      .wa__ring { position: absolute; inset: 0; animation: waSpin 20s linear infinite; }
+      .wa__disc { fill: var(--cream); stroke: var(--navy); stroke-width: 3; }
+      .wa__txt {
+        font-family: var(--font-display);
+        fill: var(--navy);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .wa__icon {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 42%;
+        transform: translate(-50%, -50%);
+      }
+      .wa__spark {
+        position: absolute;
+        top: 2%; right: 4%;
+        color: var(--pink);
+        font-size: clamp(0.9rem, 1.6vw, 1.3rem);
+      }
+      @keyframes waSpin { to { transform: rotate(360deg); } }
+      /* touch devices: a gentle upward nudge hints the swipe-up gesture */
+      @keyframes waHint { 0%, 82%, 100% { transform: translateY(0); } 90% { transform: translateY(-6px); } }
+      @media (hover: none) and (pointer: coarse) {
+        .wa { animation: waHint 3.6s ease-in-out infinite; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .wa__ring { animation: none; }
+        .wa { animation: none; }
+      }
+
       /* ---------------- entrance + subtle cloth movement ---------------- */
       @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
       @keyframes mascotIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
@@ -459,6 +505,41 @@
       </div>
       <p class="footer__legal">© 2026 Swipe</p>
     </footer>
+
+    <!-- ================= FLOATING WHATSAPP BADGE ================= -->
+    <!-- Tap, keyboard-activate, or (on touch) swipe up to open WhatsApp. -->
+    <a
+      class="wa"
+      href="https://wa.me/18455218766?text=Hi%20Swipe%2C%20I%20have%20a%20cleaning%20idea..."
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Message Swipe on WhatsApp"
+    >
+      <svg class="wa__ring" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <path id="waTop" d="M 13 60 A 47 47 0 0 1 107 60" />
+          <path id="waBottom" d="M 15 60 A 45 45 0 0 0 105 60" />
+        </defs>
+        <circle class="wa__disc" cx="60" cy="60" r="57" />
+        <text class="wa__txt" text-anchor="middle">
+          <textPath href="#waTop" startOffset="50%">Have an idea?</textPath>
+        </text>
+        <text class="wa__txt" text-anchor="middle">
+          <textPath href="#waBottom" startOffset="50%">Swipe up</textPath>
+        </text>
+      </svg>
+      <span class="wa__icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="24" fill="#25d366" />
+          <path
+            transform="translate(12 12)"
+            fill="#fff"
+            d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zM12.04 20.15h-.004a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 5.82 2.41 8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43-.14-.01-.31-.01-.48-.01-.16 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.57.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"
+          />
+        </svg>
+      </span>
+      <span class="wa__spark" aria-hidden="true">✦</span>
+    </a>
 
     <!-- ================= IDEA MODAL ================= -->
     <div class="modal" id="idea-modal" role="dialog" aria-modal="true" aria-labelledby="idea-title" aria-hidden="true">
@@ -611,6 +692,28 @@
           modalError.textContent = 'Something went wrong. Please try again.';
         }
       });
+
+      // ---- WhatsApp badge: swipe up (touch) opens the same link as a tap ----
+      const wa = document.querySelector('.wa');
+      if (wa) {
+        let sy = 0, sx = 0, swiped = false;
+        wa.addEventListener('touchstart', (e) => {
+          const t = e.changedTouches[0];
+          sy = t.clientY; sx = t.clientX; swiped = false;
+        }, { passive: true });
+        wa.addEventListener('touchmove', (e) => {
+          const t = e.changedTouches[0];
+          const dy = sy - t.clientY;              // up = positive
+          const dx = Math.abs(t.clientX - sx);
+          if (dy > 24 && dy > dx) swiped = true;  // clear upward intent
+        }, { passive: true });
+        wa.addEventListener('touchend', (e) => {
+          if (swiped) {
+            e.preventDefault();                   // suppress the synthesized tap
+            wa.click();                           // same result as clicking
+          }
+        }, { passive: false });
+      }
     </script>
   </body>
 </html>
