@@ -336,6 +336,10 @@
       }
       .wa:hover { transform: scale(1.06) rotate(-2deg); }
       .wa:active { transform: scale(0.97); }
+      /* touch: capture the hold-and-drag on the badge itself (no page scroll) */
+      .wa { touch-action: none; }
+      .wa--active { animation: none !important; transition: none; transform: translateY(calc(-1 * var(--pull, 0px))); }
+      .wa--ready .wa__disc { stroke: var(--green-deep); }  /* hold registered cue */
       .wa__ring { position: absolute; inset: 0; animation: waSpin 20s linear infinite; }
       .wa__disc { fill: var(--cream); stroke: var(--navy); stroke-width: 3; }
       .wa__txt {
@@ -693,26 +697,47 @@
         }
       });
 
-      // ---- WhatsApp badge: swipe up (touch) opens the same link as a tap ----
+      // ---- WhatsApp badge: deliberate HOLD + DRAG UP (touch) opens WhatsApp ----
+      // A plain tap or quick flick does nothing on touch, so it won't fire by
+      // accident. The finger must rest ~200ms (hold) and then drag up ~34px.
       const wa = document.querySelector('.wa');
       if (wa) {
-        let sy = 0, sx = 0, swiped = false;
+        const HOLD_MS = 200;   // must hold before the drag counts
+        const DIST = 34;       // must drag up at least this far
+        let sy = 0, sx = 0, maxUp = 0, holdOK = false, active = false, timer = null;
+
+        const reset = () => {
+          clearTimeout(timer);
+          holdOK = false; active = false; maxUp = 0;
+          wa.classList.remove('wa--active', 'wa--ready');
+          wa.style.removeProperty('--pull');
+        };
+
         wa.addEventListener('touchstart', (e) => {
           const t = e.changedTouches[0];
-          sy = t.clientY; sx = t.clientX; swiped = false;
+          sy = t.clientY; sx = t.clientX; maxUp = 0; holdOK = false; active = true;
+          wa.classList.add('wa--active');
+          timer = setTimeout(() => { holdOK = true; wa.classList.add('wa--ready'); }, HOLD_MS);
         }, { passive: true });
+
         wa.addEventListener('touchmove', (e) => {
+          if (!active) return;
           const t = e.changedTouches[0];
-          const dy = sy - t.clientY;              // up = positive
+          const dy = sy - t.clientY;               // up = positive
           const dx = Math.abs(t.clientX - sx);
-          if (dy > 24 && dy > dx) swiped = true;  // clear upward intent
+          if (dy < -6 || dx > 44) { reset(); return; } // moved down/sideways: cancel
+          maxUp = Math.max(maxUp, dy);
+          if (holdOK && dy > 0) wa.style.setProperty('--pull', Math.min(dy, 18) + 'px');
         }, { passive: true });
+
         wa.addEventListener('touchend', (e) => {
-          if (swiped) {
-            e.preventDefault();                   // suppress the synthesized tap
-            wa.click();                           // same result as clicking
-          }
+          const ok = holdOK && maxUp >= DIST;      // held long enough AND dragged up
+          reset();
+          e.preventDefault();                      // a plain tap never navigates on touch
+          if (ok) wa.click();                      // deliberate gesture opens WhatsApp
         }, { passive: false });
+
+        wa.addEventListener('touchcancel', reset, { passive: true });
       }
     </script>
   </body>
