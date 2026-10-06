@@ -355,35 +355,33 @@
       .wa { touch-action: none; }
       .wa--active { animation: none !important; transition: none; transform: translateY(calc(-1 * var(--pull, 0px))); }
       .wa--ready .wa__disc { stroke: var(--green-deep); }  /* hold registered cue */
-      .wa__ring { position: absolute; inset: 0; animation: waSpin 20s linear infinite; }
-      .wa__disc { fill: var(--cream); stroke: var(--navy); stroke-width: 3; }
+      .wa__ring { position: absolute; inset: 0; }
+      .wa__disc { fill: var(--cream); stroke: var(--navy); stroke-width: 3.5; }
       .wa__txt {
         font-family: var(--font-display);
         fill: var(--navy);
-        font-size: 11px;
-        letter-spacing: 0.06em;
+        font-size: 13px;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
       }
       .wa__icon {
         position: absolute;
         top: 50%; left: 50%;
-        width: 42%;
+        width: 48%;
         transform: translate(-50%, -50%);
       }
       .wa__spark {
         position: absolute;
-        top: 2%; right: 4%;
+        top: 0; right: 2%;
         color: var(--pink);
-        font-size: clamp(0.9rem, 1.6vw, 1.3rem);
+        font-size: clamp(0.9rem, 1.6vw, 1.35rem);
       }
-      @keyframes waSpin { to { transform: rotate(360deg); } }
       /* touch devices: a gentle upward nudge hints the swipe-up gesture */
       @keyframes waHint { 0%, 82%, 100% { transform: translateY(0); } 90% { transform: translateY(-6px); } }
       @media (hover: none) and (pointer: coarse) {
         .wa { animation: waHint 3.6s ease-in-out infinite; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .wa__ring { animation: none; }
         .wa { animation: none; }
       }
 
@@ -536,8 +534,8 @@
     >
       <svg class="wa__ring" viewBox="0 0 120 120" aria-hidden="true">
         <defs>
-          <path id="waTop" d="M 13 60 A 47 47 0 0 1 107 60" />
-          <path id="waBottom" d="M 15 60 A 45 45 0 0 0 105 60" />
+          <path id="waTop" d="M 14 60 A 46 46 0 0 1 106 60" />
+          <path id="waBottom" d="M 14 60 A 46 46 0 0 0 106 60" />
         </defs>
         <circle class="wa__disc" cx="60" cy="60" r="57" />
         <text class="wa__txt" text-anchor="middle">
