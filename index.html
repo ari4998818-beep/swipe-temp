@@ -405,18 +405,47 @@
         gap: clamp(20px, 4vw, 60px);
         padding: clamp(28px, 4vw, 56px) var(--pad-x);
       }
-      .product__media { display: grid; justify-items: center; gap: 22px; }
+      .product__media { display: grid; justify-items: center; }
       /* transparent roll-and-cloth, placed directly on the cream */
       .product__img {
-        height: clamp(360px, 54vh, 580px);
+        height: clamp(380px, 58vh, 620px);
         width: auto;
         max-width: 100%;
         display: block;
-        filter: drop-shadow(0 26px 30px rgba(12, 19, 50, 0.18));
+        filter: drop-shadow(0 26px 30px rgba(12, 19, 50, 0.16));
       }
-      .product__swatches { display: flex; gap: 14px; align-items: center; justify-content: center; }
+      .product__kicker {
+        font-family: var(--font-display); text-transform: uppercase;
+        letter-spacing: 0.16em; font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--pink);
+      }
+      .product__name {
+        font-size: clamp(2.7rem, 7vw, 4.6rem);
+        line-height: 0.9;
+        color: var(--navy);
+        margin: 4px 0 16px;
+      }
+      .product__name .pdot { color: var(--pink); }
+      .product__desc {
+        font-weight: 600; font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+        color: rgba(19, 28, 69, 0.82); max-width: 40ch;
+      }
+      .product__rule { height: 0; border: 0; border-top: 1px solid rgba(19, 28, 69, 0.15); margin: 20px 0; max-width: 460px; }
+      /* one clear benefit row — body style with middots */
+      .product__bens {
+        display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+        font-weight: 700; color: var(--navy); font-size: clamp(1rem, 1.5vw, 1.15rem);
+      }
+      .product__bens span { white-space: nowrap; }
+      .product__bens span:not(:last-child)::after {
+        content: '·'; color: rgba(19, 28, 69, 0.4); margin-left: 10px; font-weight: 800;
+      }
+      .product__colorLabel {
+        font-family: var(--font-display); text-transform: uppercase;
+        letter-spacing: 0.1em; font-size: 0.82rem; color: var(--navy); margin-bottom: 12px;
+      }
+      .product__swatches { display: flex; gap: 14px; align-items: center; margin-bottom: 24px; }
       .swatch {
-        width: 36px; height: 36px; border-radius: 50%;
+        width: 38px; height: 38px; border-radius: 50%;
         background: var(--sw);
         box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px transparent;
         position: relative;
@@ -432,38 +461,12 @@
         font-family: var(--font-body); font-weight: 800; font-size: 0.55rem;
         letter-spacing: 0.1em; text-transform: uppercase; color: rgba(19,28,69,0.5);
       }
-      .product__swatchNote { font-weight: 700; font-size: 0.85rem; color: rgba(19, 28, 69, 0.55); }
-
-      .product__kicker {
-        font-family: var(--font-display); text-transform: uppercase;
-        letter-spacing: 0.16em; font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--pink);
-      }
-      .product__name {
-        font-size: clamp(2.7rem, 7vw, 4.6rem);
-        line-height: 0.9;
-        color: var(--navy);
-        margin: 4px 0 18px;
-      }
-      /* one clear benefit row */
-      .product__bens {
-        display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
-        font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.02em;
-        color: var(--navy); font-size: clamp(0.88rem, 1.3vw, 1.05rem);
-        margin-bottom: 16px;
-      }
-      .product__bens span { white-space: nowrap; }
-      .product__bens span:not(:last-child)::after {
-        content: '•'; color: var(--green-deep); margin-left: 12px;
-      }
-      .product__desc {
-        font-weight: 600; font-size: clamp(1.02rem, 1.5vw, 1.2rem);
-        color: rgba(19, 28, 69, 0.8); max-width: 42ch; margin-bottom: 26px;
-      }
+      .product__cta { margin-top: 4px; }
 
       @media (max-width: 860px) {
         .product__inner { grid-template-columns: 1fr; gap: 22px; }
         .product__media { order: -1; }
-        .product__img { height: clamp(300px, 44vh, 440px); }
+        .product__img { height: clamp(300px, 46vh, 460px); }
       }
 
       /* ---------------- entrance + subtle cloth movement ---------------- */
@@ -598,36 +601,41 @@
               id="product-img"
               class="product__img"
               src="assets/product-green.webp"
-              width="519" height="1059"
+              width="787" height="1300"
               alt="Swipe Dish Towel Roll — green, with a cloth"
             />
-            <div class="product__swatches" role="group" aria-label="Choose a roll color">
-              <button
-                class="swatch is-active"
-                data-color="green"
-                data-src="assets/product-green.webp"
-                style="--sw: var(--green)"
-                aria-pressed="true"
-                aria-label="Green roll"
-              ></button>
-              <button class="swatch" data-color="blue" style="--sw: var(--blue)" disabled aria-label="Blue roll — coming soon"></button>
-              <button class="swatch" data-color="red" style="--sw: var(--red)" disabled aria-label="Red roll — coming soon"></button>
-            </div>
-            <p class="product__swatchNote">More colors coming soon</p>
           </div>
 
           <div class="product__info">
             <p class="product__kicker">Meet the roll.</p>
-            <h2 class="display product__name">Dish Towel Roll</h2>
+            <h2 class="display product__name">Dish Towel Roll<span class="pdot">.</span></h2>
+            <p class="product__desc">
+              A fresh cloth for everyday messes. Tear one off, use it, wash it, and use it again.
+            </p>
+            <hr class="product__rule" />
             <p class="product__bens">
               <span>30 cloths</span>
               <span>Tear-off</span>
               <span>Washable &amp; reusable</span>
             </p>
-            <p class="product__desc">
-              A fresh cloth for everyday messes. Tear one off, use it, wash it, and use it again.
-            </p>
-            <button type="button" class="btn btn--pink" data-focus-email>Keep me posted</button>
+            <hr class="product__rule" />
+            <p class="product__colorLabel">Color: <span id="color-name">Green</span></p>
+            <div class="product__swatches" role="group" aria-label="Choose a roll color">
+              <button
+                class="swatch is-active"
+                data-color="green"
+                data-name="Green"
+                data-src="assets/product-green.webp"
+                style="--sw: var(--green)"
+                aria-pressed="true"
+                aria-label="Green roll"
+              ></button>
+              <button class="swatch" data-color="blue" data-name="Blue" style="--sw: var(--blue)" disabled aria-label="Blue roll — coming soon"></button>
+              <button class="swatch" data-color="red" data-name="Red" style="--sw: var(--red)" disabled aria-label="Red roll — coming soon"></button>
+            </div>
+            <a class="btn btn--pink product__cta" href="https://wa.me/18455218766?text=Hi%20Swipe%2C%20where%20can%20I%20buy%20the%20Dish%20Towel%20Roll%3F" target="_blank" rel="noopener noreferrer">
+              Find Swipe <span aria-hidden="true">&rarr;</span>
+            </a>
           </div>
         </div>
       </section>
@@ -899,9 +907,10 @@
         });
       });
 
-      // ---- Product color selector: swap the roll image ----
+      // ---- Product color selector: swap the roll image + color name ----
       (function () {
         var img = document.getElementById('product-img');
+        var nameEl = document.getElementById('color-name');
         if (!img) return;
         document.querySelectorAll('.product__swatches .swatch').forEach(function (sw) {
           sw.addEventListener('click', function () {
@@ -909,6 +918,7 @@
             if (!src || sw.disabled) return;
             img.src = src;
             img.alt = 'Swipe Dish Towel Roll — ' + sw.getAttribute('data-color');
+            if (nameEl) nameEl.textContent = sw.getAttribute('data-name') || '';
             document.querySelectorAll('.product__swatches .swatch').forEach(function (s) {
               s.classList.remove('is-active');
               s.setAttribute('aria-pressed', 'false');
