@@ -386,6 +386,16 @@
         .wa { animation: none; }
       }
 
+      /* Hide Netlify's injected "powered by Netlify" HUD/badge on mobile */
+      @media (max-width: 860px) {
+        netlify-badge,
+        netlify-hud,
+        #netlify-hud,
+        iframe[src*="netlify"] {
+          display: none !important;
+        }
+      }
+
       /* ---------------- entrance + subtle cloth movement ---------------- */
       @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
       @keyframes mascotIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
@@ -753,6 +763,21 @@
 
         wa.addEventListener('touchcancel', reset, { passive: true });
       }
+
+      // On mobile, remove Netlify's injected "powered by Netlify" HUD/badge
+      // (it's added asynchronously, so watch for it and strip it out).
+      (function () {
+        var isMobile = window.matchMedia('(max-width: 860px)').matches;
+        if (!isMobile) return;
+        var kill = function () {
+          document.querySelectorAll('netlify-badge, netlify-hud, #netlify-hud').forEach(function (el) { el.remove(); });
+        };
+        kill();
+        try {
+          new MutationObserver(kill).observe(document.documentElement, { childList: true, subtree: true });
+        } catch (e) {}
+        window.addEventListener('load', kill);
+      })();
     </script>
   </body>
 </html>
