@@ -773,6 +773,15 @@
         } catch (e) {}
         window.addEventListener('load', kill);
       })();
+
+      // Clarity: tag Swipe-logo clicks (top nav + footer) so they can be
+      // filtered in Recordings. Many visitors click the logo expecting it to
+      // navigate — this surfaces exactly those sessions.
+      document.querySelectorAll('.nav__logo, .footer__logo').forEach(function (el) {
+        el.addEventListener('click', function () {
+          if (window.clarity) { try { window.clarity('event', 'logo_click'); } catch (e) {} }
+        });
+      });
     </script>
   </body>
 </html>
