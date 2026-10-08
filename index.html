@@ -48,6 +48,8 @@
         --cream: #f7f1e3;
         --cream-warm: #f2e9d4;
         --white: #fff;
+        --blue: #2f6fc0;
+        --red: #d63a2c;
         --font-display: 'Anton', 'Arial Narrow', sans-serif;
         --font-body: 'Nunito', system-ui, sans-serif;
         --nav-h: 76px;
@@ -392,6 +394,68 @@
         display: none !important;
       }
 
+      /* ---------------- product section ---------------- */
+      .product { background: var(--cream); border-top: 2px dashed rgba(19, 28, 69, 0.14); }
+      .product__inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        align-items: center;
+        gap: clamp(24px, 5vw, 64px);
+        padding: clamp(48px, 7vw, 90px) var(--pad-x);
+      }
+      .product__media { display: grid; justify-items: center; gap: 18px; }
+      .product__card {
+        background: var(--white);
+        border-radius: 22px;
+        padding: 18px;
+        box-shadow: 0 20px 44px rgba(12, 19, 50, 0.14);
+        width: 100%;
+        max-width: 360px;
+      }
+      .product__img { width: 100%; height: auto; display: block; }
+      .product__swatches { display: flex; gap: 14px; align-items: center; justify-content: center; }
+      .swatch {
+        width: 34px; height: 34px; border-radius: 50%;
+        background: var(--sw);
+        box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px transparent;
+        position: relative;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .swatch:hover { transform: translateY(-2px); }
+      .swatch.is-active { box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px var(--navy); }
+      .swatch[disabled] { opacity: 0.4; cursor: not-allowed; }
+      .swatch[disabled]::after {
+        content: 'soon';
+        position: absolute; left: 50%; top: calc(100% + 5px);
+        transform: translateX(-50%);
+        font-family: var(--font-body); font-weight: 800; font-size: 0.55rem;
+        letter-spacing: 0.1em; text-transform: uppercase; color: rgba(19,28,69,0.5);
+      }
+      .product__swatchNote { font-weight: 700; font-size: 0.85rem; color: rgba(19, 28, 69, 0.55); }
+
+      .product__kicker {
+        font-family: var(--font-display); text-transform: uppercase;
+        letter-spacing: 0.18em; font-size: 0.82rem; color: var(--pink);
+      }
+      .product__name { font-size: clamp(2.2rem, 5.5vw, 3.6rem); color: var(--navy); margin-top: 6px; }
+      .product__pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+      .product__pills span {
+        font-family: var(--font-display); text-transform: uppercase; font-size: 0.75rem;
+        letter-spacing: 0.04em; color: var(--navy);
+        background: var(--green); padding: 7px 14px 5px; border-radius: 999px;
+      }
+      .product__desc { font-weight: 600; font-size: clamp(1rem, 1.5vw, 1.15rem); color: rgba(19, 28, 69, 0.8); max-width: 46ch; }
+      .product__features { list-style: none; display: flex; flex-wrap: wrap; gap: 14px 26px; margin: 20px 0 24px; }
+      .product__features li { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 0.92rem; color: var(--navy); }
+      .product__features svg { width: 26px; height: 26px; color: var(--green-deep); flex: 0 0 auto; }
+
+      @media (max-width: 860px) {
+        .product__inner { grid-template-columns: 1fr; gap: 28px; }
+        .product__media { order: -1; }
+      }
+
       /* ---------------- entrance + subtle cloth movement ---------------- */
       @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
       @keyframes mascotIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
@@ -512,6 +576,61 @@
             />
             <span class="spark spark--a" aria-hidden="true">✦</span>
             <span class="spark spark--b" aria-hidden="true">✦</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PRODUCT ================= -->
+      <section class="product" id="product">
+        <div class="product__inner">
+          <div class="product__media">
+            <div class="product__card">
+              <img
+                id="product-img"
+                class="product__img"
+                src="assets/product-green.webp"
+                width="675" height="1200"
+                alt="Swipe Dish Towel Roll — green"
+              />
+            </div>
+            <div class="product__swatches" role="group" aria-label="Choose a roll color">
+              <button
+                class="swatch is-active"
+                data-color="green"
+                data-src="assets/product-green.webp"
+                style="--sw: var(--green)"
+                aria-pressed="true"
+                aria-label="Green roll"
+              ></button>
+              <button class="swatch" data-color="blue" style="--sw: var(--blue)" disabled aria-label="Blue roll — coming soon"></button>
+              <button class="swatch" data-color="red" style="--sw: var(--red)" disabled aria-label="Red roll — coming soon"></button>
+            </div>
+            <p class="product__swatchNote">More colors coming soon</p>
+          </div>
+
+          <div class="product__info">
+            <p class="product__kicker">The current drop</p>
+            <h2 class="display product__name">Dish Towel Roll</h2>
+            <p class="product__pills"><span>Reusable</span><span>Tearable</span><span>Washable</span></p>
+            <p class="product__desc">
+              The kitchen cloth made smarter. For rinse, wash &amp; dry — built soft, cleans strong.
+              30 tear-off cloths per roll.
+            </p>
+            <ul class="product__features">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 6.3"/><path d="M20 5v6h-6"/></svg>
+                Reusable &amp; eco-friendly
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C7.5 8.5 5 11.5 5 15a7 7 0 0 0 14 0c0-3.5-2.5-6.5-7-12z"/></svg>
+                Super absorbent
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"/><circle cx="12" cy="13" r="5"/><path d="M7 6h.01"/></svg>
+                Machine washable
+              </li>
+            </ul>
+            <button type="button" class="btn btn--pink" data-focus-email>Keep me posted</button>
           </div>
         </div>
       </section>
@@ -782,6 +901,27 @@
           if (window.clarity) { try { window.clarity('event', 'logo_click'); } catch (e) {} }
         });
       });
+
+      // ---- Product color selector: swap the roll image ----
+      (function () {
+        var img = document.getElementById('product-img');
+        if (!img) return;
+        document.querySelectorAll('.product__swatches .swatch').forEach(function (sw) {
+          sw.addEventListener('click', function () {
+            var src = sw.getAttribute('data-src');
+            if (!src || sw.disabled) return;
+            img.src = src;
+            img.alt = 'Swipe Dish Towel Roll — ' + sw.getAttribute('data-color');
+            document.querySelectorAll('.product__swatches .swatch').forEach(function (s) {
+              s.classList.remove('is-active');
+              s.setAttribute('aria-pressed', 'false');
+            });
+            sw.classList.add('is-active');
+            sw.setAttribute('aria-pressed', 'true');
+            if (window.clarity) { try { window.clarity('event', 'color_' + sw.getAttribute('data-color')); } catch (e) {} }
+          });
+        });
+      })();
     </script>
   </body>
 </html>
